@@ -14,12 +14,6 @@ running = false
  
  function check_incoming_text(original)
 	local org = original:lower()
-	
-	if org:find('sparks of eminence, and now possess a total of 99999') ~= nil then
-		running = false
-	elseif org:find('one or more party/alliance members do not have the required 200 unity accolades to join the fray') ~= nil then
-		running = false
-		end
 end
  
  function bpPressNumpad7()    
@@ -52,27 +46,26 @@ end
  
  function bpEngage()
     
-   --Grab local player and if there is a battle-target monster in our vicinity
+
     local player = windower.ffxi.get_player()
     local current_mob = windower.ffxi.get_mob_by_target('bt')
     local current_mob_id = windower.ffxi.get_mob_by_id(current_mob.id)
     local current_mob_hpp = current_mob_id.hpp
-    local allowed = S{"WAR", "MNK", "THF", "SAM", "NIN", "BLU", "RNG", "COR", "DRK", "RUN", "PLD", "BST", "PUP", "DNC"}
-    --if there is, get distance from that monster
+    local allowed = S{"WAR", "MNK", "THF", "SAM", "NIN", "BLU", "RNG", "COR", "DRK", "RUN", "PLD", "BST", "PUP", "DNC", "BRD"}
+   
     if current_mob ~= nil then
     local current_mob_distance = math.sqrt(current_mob.distance)
  
-        --Check that player is not currently engaged
+
         if player.status == 0 then
-          --Check if player is currently on a melee damage dealer, and engage if so
+
           if allowed[player.main_job] then
           windower.chat.input('/a <bt>')
-            -- If current mob is anywhere other than right in our face, lets run to it
+         
             if current_mob_distance > 2 then
             windower.chat.input('/follow')
             facemob(windower.ffxi.get_mob_by_id(current_mob.id))
-            --Follow handles a majority of the facing, facemob will take care of the rest
-            --If we aren't engaged, cancel follow so we don't shoot off into space
+
             elseif player.status == 0 then
             bpPressNumpad7()
             
@@ -80,7 +73,7 @@ end
 
           end
         end
-      --Check if player is engaged, and their distance from mob, and handle following & facing while engaged. Also make sure we don't kill client by spamming log with /follow when mob dies.
+  .
       elseif player.status == 1 and current_mob_distance < 10 and current_mob_hpp > 1 then
       windower.chat.input('/follow')
      facemob(windower.ffxi.get_mob_by_id(current_mob.id))
@@ -132,8 +125,3 @@ windower.register_event('incoming text', function(new, old)
 		check_incoming_text(new)
 	end
 end)
-
-while(running == true) 
-do
-  bpEngage()
-  end
