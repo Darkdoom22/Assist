@@ -112,7 +112,7 @@ end
 
       windower.register_event('prerender', function()
           if running == true then
-            if os.clock() - Timer > 5 then
+            if os.clock() - Timer > 1 then
 		bpEngage()
 		Timer = os.clock()
 	    end
