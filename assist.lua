@@ -6,7 +6,7 @@ _addon.command = 'as'
 _addon.commands = {'start', 'stop', 'help'}
 _addon.language = 'english'
  
- 
+ Timer = os.clock()
 
 res = require('resources')
 
@@ -112,9 +112,12 @@ end
 
       windower.register_event('prerender', function()
           if running == true then
-            bpEngage()
+            if os.clock() - Timer > 5 then
+		bpEngage()
+		Timer = os.clock()
+	    end
           end
-          end)
+        end)
 
 windower.register_event('addon command', as_command)
 windower.register_event('incoming text', function(new, old)
