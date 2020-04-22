@@ -49,11 +49,11 @@ end
 
     local player = windower.ffxi.get_player()
     local current_mob = windower.ffxi.get_mob_by_target('bt')
+    if current_mob ~= nil then
+    
     local current_mob_id = windower.ffxi.get_mob_by_id(current_mob.id)
     local current_mob_hpp = current_mob_id.hpp
     local allowed = S{"WAR", "MNK", "THF", "SAM", "NIN", "BLU", "RNG", "COR", "DRK", "RUN", "PLD", "BST", "PUP", "DNC", "BRD"}
-   
-    if current_mob ~= nil then
     local current_mob_distance = math.sqrt(current_mob.distance)
  
 
